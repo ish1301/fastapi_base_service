@@ -4,8 +4,8 @@ from pydantic import BaseModel
 class ClaimBase(BaseModel):
     name: str
     description: str | None = None
-    price: int = 0
-    tax: int = 0
+    price: float = 0
+    tax: float = 0
 
 
 class ClaimCreate(ClaimBase):

@@ -19,8 +19,11 @@ def create_claim(db: Session, claim: schemas.ClaimCreate):
         "price": claim.price,
         "tax": claim.tax,
     }
+    print("XXX")
+    print(claimData)
+    print("XXX")
 
-    db_claim = models.Claim(*claimData)
+    db_claim = models.Claim(**claimData)
     db.add(db_claim)
     db.commit()
     db.refresh(db_claim)

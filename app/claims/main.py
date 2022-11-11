@@ -19,4 +19,10 @@ def get_db():
 
 @app.get("/claims", response_model=list[schemas.Claim])
 async def list_claims(skip: int = 0, limit: str = 10, db: Session = Depends(get_db)):
-    return []
+    claims = crud.get_claims(db, skip=skip, limit=limit)
+    return claims
+
+
+@app.post("/claims/", response_model=schemas.Claim)
+def create_claim(claim: schemas.ClaimCreate, db: Session = Depends(get_db)):
+    return crud.create_claim(db=db, claim=claim)
