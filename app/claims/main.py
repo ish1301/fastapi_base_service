@@ -5,6 +5,6 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get("/")
-async def home():
+@app.get("/claims")
+async def get_claims():
     return {"message": f"Hello World"}

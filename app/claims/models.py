@@ -1,8 +1,13 @@
-from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String, Float
+
+from .database import Base
 
 
-class Claim(BaseModel):
-    name: str
-    description: str | None = None
-    price: float
-    tax: float | None = None
+class Claim(Base):
+    __tablename__ = "claims"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    description = Column(String)
+    price: Column(Float, default=0)
+    tax: Column(Float, default=0)
