@@ -17,3 +17,7 @@ class Claim(ClaimBase):
 
     class Config:
         orm_mode = True
+
+
+class ClaimFileUpload(BaseModel):
+    fileame: str
