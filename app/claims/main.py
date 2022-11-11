@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.claims import crud, models, schemas
 from app.claims.database import SessionLocal, engine
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, UploadFile
 
 app = FastAPI()
 
@@ -32,3 +32,8 @@ async def get_claim(claim_id: int, db: Session = Depends(get_db)):
 @app.post("/claims/", response_model=schemas.Claim)
 def create_claim(claim: schemas.ClaimCreate, db: Session = Depends(get_db)):
     return crud.create_claim(db=db, claim=claim)
+
+
+@app.post("/claims_upload/", response_model=list[schemas.Claim])
+def upload_claim(file: UploadFile, db: Session = Depends(get_db)):
+    return crud.upload_claim(db=db, file=file)
