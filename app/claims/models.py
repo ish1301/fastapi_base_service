@@ -7,7 +7,13 @@ class Claim(Base):
     __tablename__ = "claims"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    description = Column(String, nullable=True)
-    price = Column(Float, default=0)
-    tax = Column(Float, default=0)
+    service_date = Column(String, nullable=True)
+    submitted_procedure = Column(String, nullable=True)
+    quadrant = Column(String, nullable=True)
+    plan_group = Column(String, nullable=True)
+    subscriber = Column(String, nullable=True)
+    provider_npi = Column(String, nullable=True)
+    provider_fees = Column(String, nullable=True)
+    allowed_fees = Column(String, nullable=True)
+    member_coinsurance = Column(String, nullable=True)
+    member_copay = Column(String, nullable=True)
