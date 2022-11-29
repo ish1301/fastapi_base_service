@@ -10,3 +10,5 @@ COPY requirements.txt requirements-dev.txt /code/
 
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt
+
+EXPOSE 80
