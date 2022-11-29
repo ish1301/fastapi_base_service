@@ -28,5 +28,5 @@ class NetworkEventBase(BaseModel):
     time: str
 
 
-class NetworkEventCreate(NetworkEventBase):
+class NetworkEventCreateProposal(NetworkEventBase):
     pass
