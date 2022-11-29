@@ -1,5 +1,7 @@
 FROM python:3.10-alpine
 
+RUN apk update
+
 ENV PYTHONPATH=/code \
   PYTHONFAULTHANDLER=1 \
   PYTHONDONTWRITEBYTECODE=1 \
@@ -7,9 +9,8 @@ ENV PYTHONPATH=/code \
 
 WORKDIR /code
 
-COPY requirements.txt requirements-dev.txt /code/
+COPY ../requirements.txt ../requirements-dev.txt /code/
 
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt
-
-EXPOSE 80
