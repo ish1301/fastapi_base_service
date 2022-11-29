@@ -1,0 +1,51 @@
+# This docker-compose file is for running Kafka and Postgres locally
+version: '3'
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.7.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - infra_zookeeper_data:/bitnami/zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: bitnami/kafka:3.0.0
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    user: root
+    volumes:
+      - infra_kafka_data:/bitnami/kafka
+      - ./meta.properties:/tmp/kraft-combined-logs/meta.properties
+    environment:
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    entrypoint: [ "kafka-server-start.sh", "/opt/bitnami/kafka/config/kraft/server.properties" ]
+    depends_on:
+      - zookeeper
+
+  postgres:
+    image: postgres:14.1-alpine
+    hostname: postgres
+    container_name: postgres
+    env_file: ./postgres/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - infra_pg_data:/var/lib/postgresql/data
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+  
+
+volumes:
+  infra_pg_data:
+  infra_kafka_data:
+  infra_zookeeper_data:
