@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, Integer, String
 
-from .database import Base
+from ..common.database import Base
 
 
 class Claim(Base):

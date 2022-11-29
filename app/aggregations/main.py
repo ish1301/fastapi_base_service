@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from app.claims import crud, models, schemas
-from app.claims.database import SessionLocal, engine
+from app.aggregations import crud, models, schemas
+from app.common.database import SessionLocal, engine
 from fastapi import Depends, FastAPI, UploadFile
 
 app = FastAPI()
