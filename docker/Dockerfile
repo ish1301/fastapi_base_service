@@ -4,7 +4,6 @@ ENV PYTHONPATH=/code \
   PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1
 
-
 WORKDIR /code
 
 COPY requirements.txt requirements-dev.txt /code/
