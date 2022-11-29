@@ -30,3 +30,7 @@ class NetworkEventBase(BaseModel):
 
 class NetworkEventCreateProposal(NetworkEventBase):
     pass
+
+
+class NetworkEventCreateCreated(NetworkEventBase):
+    pass
