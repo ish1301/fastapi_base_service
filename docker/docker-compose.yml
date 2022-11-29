@@ -32,18 +32,15 @@ services:
     depends_on:
       - zookeeper
 
-  postgres:
-    image: postgres:14.1-alpine
-    hostname: postgres
-    container_name: postgres
-    env_file: ./postgres/.env
+  network_events:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    container_name: network_events
     ports:
-      - "5432:5432"
-    volumes:
-      - infra_pg_data:/var/lib/postgresql/data
-      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - "8000:8000"
+    command: uvicorn app.aggregations.main:app --host 0.0.0.0 --port 8000
 
-  
 
 volumes:
   infra_pg_data:
