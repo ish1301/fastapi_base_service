@@ -1,7 +1,12 @@
 from app.aggregations.schema import NetworkEventBase, NetworkEventCreateProposal
-from fastapi import FastAPI, HTTPException, UploadFile
+from app.aggregations.settings import Settings
+from app.common.agent import Agent
+from fastapi import FastAPI
 
 app = FastAPI()
+agent = Agent(
+    kafka_host=Settings.kafka_host,
+)
 
 
 @app.post("/network_events/", response_model=list[NetworkEventBase])
