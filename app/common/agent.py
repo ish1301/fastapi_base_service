@@ -1,5 +1,6 @@
-from aiokafka import AIOKafkaProducer
+from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 
+from app.common.base import _open_envelope, _prepare_envelope
 from app.common.events import Event
 from app.common.log import get_logger
 
@@ -13,6 +14,7 @@ class Agent:
     ):
         self.kafka_host = kafka_host
         self._producer: AIOKafkaProducer = None
+        self._consumer: AIOKafkaConsumer = None
 
     async def produce(
         self,
@@ -24,20 +26,21 @@ class Agent:
             await p.start()
             self._producer = p
 
+        msg = await _prepare_envelope(event)
         log.info(f"Sending message: {event} to topic {topic}")
         await self._producer.send(topic, value=event)
         log.info(f"message sent to topic {topic}")
 
-    async def produce_and_wait(
-        self,
-        topic: str,
-        event: Event,
-    ):
-        if not self._producer:
-            p = AIOKafkaProducer(bootstrap_servers=self.kafka_host)
-            await p.start()
-            self._producer = p
+    async def consume(self, topic: str, func):
+        if not self._consumer:
+            c = AIOKafkaConsumer(topic, bootstrap_servers=self.kafka_host)
+            await c.start()
+            self._consumer = c
 
-        log.info(f"Sending message: {event} to topic {topic}")
-        await self._producer.send_and_wait(topic, value=event)
-        log.info(f"message sent to topic {topic}")
+        async for message_metadata in self.consumer:
+            try:
+                event = await _open_envelope(message_metadata)
+                # log.debug(f"message received post open envelop - {event}")
+                await func(event)
+            except Exception as e:
+                log.exception(e)
