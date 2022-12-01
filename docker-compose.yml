@@ -22,7 +22,7 @@ services:
     user: root
     volumes:
       - infra_kafka_data:/bitnami/kafka
-      - ./meta.properties:/tmp/kraft-combined-logs/meta.properties
+      - ./docker/meta.properties:/tmp/kraft-combined-logs/meta.properties
     environment:
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
