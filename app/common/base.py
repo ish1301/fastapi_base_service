@@ -3,10 +3,8 @@ from typing import Tuple
 
 from app.common.events import Event
 
-# @TODO, Improve message struct for better performance
-# Add EventName as meta data
 
-
+# @TODO, Improve message struct for better performance and storage add event name as meta data
 async def _open_envelope(message) -> Tuple[Event, str]:
     return json.loads(message)
 

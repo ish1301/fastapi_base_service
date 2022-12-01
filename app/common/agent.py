@@ -44,3 +44,15 @@ class Agent:
                 await func(event)
             except Exception as e:
                 log.exception(e)
+
+    def subscribe(self, topic: str):
+        """
+        This function reads all events from the provided Kafka topic
+        :param topic: topic to read events from
+        :return:
+        """
+
+        def wrapper(func):
+            return self.loop.create_task(self.consume(topic, func))
+
+        return wrapper
