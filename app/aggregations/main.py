@@ -1,6 +1,7 @@
 from app.aggregations.schema import NetworkEventBase, NetworkEventCreateProposal
 from app.aggregations.settings import Settings
 from app.common.agent import Agent
+from app.common.topics import NETWORK_EVENTS
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -15,5 +16,5 @@ async def upload_network_events(records: list[NetworkEventCreateProposal]):
     Submit network events to our data stream
     """
     for i in records:
-        print(i)
+        agent.produce(NETWORK_EVENTS, NetworkEventCreateProposal(**i))
     return records
