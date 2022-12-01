@@ -21,21 +21,6 @@ class BaseModel(Base):  # type: ignore
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
 
-class TenantModel(Base):  # type: ignore
-    __abstract__ = True
-
-    organisation_id = Column(UUID(as_uuid=True))
-
-
-class AuditedModel(Base):  # type: ignore
-    __abstract__ = True
-
-    created_by_id = Column(String(36))
-    updated_by_id = Column(String(36))
-    created_date = Column(String(36))
-    updated_date = Column(String(36))
-
-
 class Database:
     def __init__(self, database_url: str) -> None:
         super().__init__()
