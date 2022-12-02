@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 from pydantic import BaseSettings
 
@@ -10,7 +9,7 @@ log = get_logger(__name__)
 
 
 class ESBaseSettings(BaseSettings):
-    env: str = EnvironmentName.ENV_DEV.value
+    env: str = str(EnvironmentName.ENV_DEV.value)
 
     def get(self, *args):
         values = []
@@ -35,7 +34,7 @@ class DatabaseSettings(ESBaseSettings):
 
 
 class KafkaSettings(ESBaseSettings):
-    kafka_host: str = "127.0.0.1:9092"
+    kafka_host: str = "kafka:9092"
 
 
 def load_settings(cls, env_file):
@@ -48,7 +47,7 @@ def load_settings(cls, env_file):
 
     for attr in vars(settings).items():
         # avoid logging sensitive data
-        if attr[0] in ("db_pass", "db_user", "mutual_tls_key"):
+        if attr[0] in ("db_pass", "db_user"):
             log.info(f"{attr[0]} :: *********")
         else:
             log.info(f"{attr[0]} :: {attr[1]}")

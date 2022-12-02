@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class EnvironmentName(Enum):
-    ENV_DEV = "dev", "Development"
-    ENV_STG = "stg", "Stage"
-    ENV_PRD = "prd", "Production"
+    ENV_DEV = "dev"
+    ENV_STG = "stg"
+    ENV_PRD = "prd"
