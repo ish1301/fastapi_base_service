@@ -34,3 +34,8 @@ class NetworkEventCreateProposal(NetworkEventBase):
 
 class NetworkEventCreateCreated(NetworkEventBase):
     pass
+
+
+class NetworkEventBulkResponse(BaseModel):
+    count: int = 0
+    message: str

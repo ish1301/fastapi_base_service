@@ -1,4 +1,4 @@
-from app.aggregations.schema import NetworkEventBase, NetworkEventCreateProposal
+from app.aggregations.schema import NetworkEventBulkResponse, NetworkEventCreateProposal
 from app.aggregations.settings import settings
 from app.common.agent import Agent
 from app.common.topics import NETWORK_EVENTS
@@ -10,11 +10,13 @@ agent = Agent(
 )
 
 
-@app.post("/network_events/", response_model=list[NetworkEventBase])
+@app.post("/network_events/", response_model=NetworkEventBulkResponse)
 async def upload_network_events(records: list[NetworkEventCreateProposal]):
     """
     Submit network events to our data stream
     """
+    count = 0
     for i in records:
         await agent.produce(NETWORK_EVENTS, NetworkEventCreateProposal(**i.__dict__))
-    return records
+        count += 1
+    return NetworkEventBulkResponse(message="Submitted {count} events", count=count)
