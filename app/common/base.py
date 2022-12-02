@@ -10,4 +10,4 @@ async def prepare_envelope(event):
 
 
 async def open_envelope(message) -> Tuple[Event, str]:
-    return json.loads(message)
+    return json.loads(message.value.decode("utf-8"))
