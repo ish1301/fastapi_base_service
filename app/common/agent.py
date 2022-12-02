@@ -41,10 +41,10 @@ class Agent:
             await c.start()
             self._consumer = c
 
-        async for message_metadata in self.consumer:
+        async for message_metadata in self._consumer:
             try:
                 event = await open_envelope(message_metadata)
-                # log.debug(f"message received post open envelop - {event}")
+                log.debug(f"message received post open envelop - {event}")
                 await func(event)
             except Exception as e:
                 log.exception(e)
