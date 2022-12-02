@@ -10,4 +10,3 @@ class Settings(KafkaSettings):
 settings: Settings = load_settings(
     Settings, os.path.join(os.path.dirname(__file__), ".env")
 )
-print(settings)

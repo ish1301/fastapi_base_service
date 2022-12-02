@@ -1,12 +1,12 @@
 from app.aggregations.schema import NetworkEventBase, NetworkEventCreateProposal
-from app.aggregations.settings import Settings
+from app.aggregations.settings import settings
 from app.common.agent import Agent
 from app.common.topics import NETWORK_EVENTS
 from fastapi import FastAPI
 
 app = FastAPI()
 agent = Agent(
-    kafka_host=Settings.kafka_host,
+    kafka_host=settings.kafka_host,
 )
 
 
