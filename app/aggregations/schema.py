@@ -39,3 +39,9 @@ class NetworkEventCreateCreated(NetworkEventBase):
 class NetworkEventBulkResponse(BaseModel):
     count: int = 0
     message: str
+
+
+class NetworkEventAggregation(BaseModel):
+    uid: str
+    rolling_sum: int
+    time_diff: int

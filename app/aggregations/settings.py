@@ -1,9 +1,9 @@
 import os
 
-from app.common.settings import KafkaSettings, load_settings
+from app.common.settings import DatabaseSettings, KafkaSettings, load_settings
 
 
-class Settings(KafkaSettings):
+class Settings(DatabaseSettings, KafkaSettings):
     pass
 
 
