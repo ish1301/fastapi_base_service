@@ -11,8 +11,10 @@ class Agent:
     def __init__(
         self,
         kafka_host,
+        loop,
     ):
         self.kafka_host = kafka_host
+        self.loop = loop
         self._producer: AIOKafkaProducer = None
         self._consumer: AIOKafkaConsumer = None
 
@@ -22,7 +24,7 @@ class Agent:
         event: Event,
     ):
         if not self._producer:
-            p = AIOKafkaProducer(bootstrap_servers=self.kafka_host)
+            p = AIOKafkaProducer(loop=self.loop, bootstrap_servers=self.kafka_host)
             await p.start()
             self._producer = p
 
@@ -33,7 +35,9 @@ class Agent:
 
     async def consume(self, topic: str, func):
         if not self._consumer:
-            c = AIOKafkaConsumer(topic, bootstrap_servers=self.kafka_host)
+            c = AIOKafkaConsumer(
+                topic, loop=self.loop, bootstrap_servers=self.kafka_host
+            )
             await c.start()
             self._consumer = c
 
