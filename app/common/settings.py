@@ -34,7 +34,7 @@ class DatabaseSettings(ESBaseSettings):
 
 
 class KafkaSettings(ESBaseSettings):
-    kafka_host: str = "kafka:9092"
+    kafka_host: str = "127.0.0.1:9092"
 
 
 def load_settings(cls, env_file):

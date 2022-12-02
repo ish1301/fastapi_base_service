@@ -16,5 +16,5 @@ async def upload_network_events(records: list[NetworkEventCreateProposal]):
     Submit network events to our data stream
     """
     for i in records:
-        agent.produce(NETWORK_EVENTS, NetworkEventCreateProposal(**i))
+        await agent.produce(NETWORK_EVENTS, NetworkEventCreateProposal(**i.__dict__))
     return records
