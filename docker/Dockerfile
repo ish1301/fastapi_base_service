@@ -14,3 +14,5 @@ COPY ../requirements.txt ../requirements-dev.txt /code/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-dev.txt
+
+CMD ["uvicorn", "app.aggregations.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
