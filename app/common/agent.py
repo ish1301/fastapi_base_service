@@ -1,6 +1,6 @@
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 
-from app.common.base import _open_envelope, _prepare_envelope
+from app.common.base import open_envelope, prepare_envelope
 from app.common.events import Event
 from app.common.log import get_logger
 
@@ -26,9 +26,9 @@ class Agent:
             await p.start()
             self._producer = p
 
-        msg = await _prepare_envelope(event)
+        msg = await prepare_envelope(event)
         log.info(f"Sending message: {event} to topic {topic}")
-        await self._producer.send(topic, value=event)
+        await self._producer.send(topic, value=msg)
         log.info(f"message sent to topic {topic}")
 
     async def consume(self, topic: str, func):
@@ -39,7 +39,7 @@ class Agent:
 
         async for message_metadata in self.consumer:
             try:
-                event = await _open_envelope(message_metadata)
+                event = await open_envelope(message_metadata)
                 # log.debug(f"message received post open envelop - {event}")
                 await func(event)
             except Exception as e:
