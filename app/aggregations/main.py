@@ -15,6 +15,7 @@ from fastapi import FastAPI
 app = FastAPI()
 loop = asyncio.get_running_loop()
 agent = Agent(
+    agent_id="network-events",
     kafka_host=settings.kafka_host,
     loop=loop,
 )
@@ -42,4 +43,15 @@ async def handle_network_events(event: Event):
 
 @app.get("/network_events/aggregations", response_model=NetworkEventAggregation)
 async def upload_network_events():
-    return NetworkEventAggregation(uid="", rolling_sum=0, time_diff=0)
+    rolling_sum = 0
+    time_diff = 0
+    criteria = {}
+    events = cache.list(
+        cache_keys.CACHE_NETWORK_EVENTS, NetworkEventCreateProposal, criteria
+    )
+    for e in events:
+        rolling_sum += int(e.orig_pkts)
+
+    return NetworkEventAggregation(
+        uid="csbodu1e1ve3u0vk98", rolling_sum=rolling_sum, time_diff=time_diff
+    )

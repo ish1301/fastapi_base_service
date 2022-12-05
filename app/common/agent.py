@@ -10,9 +10,11 @@ log = get_logger(__name__)
 class Agent:
     def __init__(
         self,
+        agent_id,
         kafka_host,
         loop,
     ):
+        self.id = agent_id
         self.kafka_host = kafka_host
         self.loop = loop
         self._producer: AIOKafkaProducer = None
@@ -36,7 +38,10 @@ class Agent:
     async def consume(self, topic: str, func):
         if not self._consumer:
             c = AIOKafkaConsumer(
-                topic, loop=self.loop, bootstrap_servers=self.kafka_host
+                topic,
+                loop=self.loop,
+                bootstrap_servers=self.kafka_host,
+                group_id=self.id,
             )
             await c.start()
             self._consumer = c
