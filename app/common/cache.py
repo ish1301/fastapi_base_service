@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 
 from mongita.collection import Collection
@@ -32,6 +33,7 @@ class Cache:
 
     def put(self, table: str, obj: HasId):
         collection: Collection = self.db[table]
-        _dict = obj.__dict__
+        if "_id" not in obj:
+            obj["_id"] = str(uuid.uuid4())
 
-        collection.replace_one({"_id": _dict["_id"]}, _dict, upsert=True)
+        collection.replace_one({"_id": obj["_id"]}, obj, upsert=True)
