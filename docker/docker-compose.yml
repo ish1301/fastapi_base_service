@@ -33,6 +33,5 @@ services:
       - zookeeper
 
 volumes:
-  infra_pg_data:
   infra_kafka_data:
   infra_zookeeper_data:

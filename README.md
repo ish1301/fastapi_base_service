@@ -2,6 +2,15 @@
 
 This is a microservice
 
+**Launch Docker Cluster**
+
+This will create local infrastructure (kafka, zookeeper)
+
+```sh
+cd docker/
+docker-compose up -d
+```
+
 **Launch this service**
 
 ```sh
