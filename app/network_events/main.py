@@ -1,15 +1,15 @@
 import asyncio
 
-from app.aggregations.schema import (
-    NetworkEventAggregation,
-    NetworkEventBulkResponse,
-    NetworkEventCreateProposal,
-)
-from app.aggregations.settings import settings
 from app.common import cache_keys, topics
 from app.common.agent import Agent
 from app.common.cache import Cache
 from app.common.events import Event
+from app.network_events.schema import (
+    NetworkEventAggregation,
+    NetworkEventBulkResponse,
+    NetworkEventCreateProposal,
+)
+from app.network_events.settings import settings
 from fastapi import FastAPI
 
 app = FastAPI()
