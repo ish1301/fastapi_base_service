@@ -23,7 +23,7 @@ pip install -r requirements-dev.txt
 
 ```sh
 . venv/bin/activate
-uvicorn app.network_networks.main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn app.network_events.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Service documentation
