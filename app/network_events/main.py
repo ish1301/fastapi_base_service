@@ -42,7 +42,7 @@ async def handle_network_events(event: Event):
 
 
 @app.get("/network_events/aggregations", response_model=NetworkEventAggregation)
-async def upload_network_events():
+async def network_events_aggregations():
     rolling_sum = 0
     time_diff = 0
     criteria = {}
