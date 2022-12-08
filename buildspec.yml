@@ -1,0 +1,30 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      python: 3.8
+  pre_build:
+    commands:
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - export RELEASE_TAG=$(echo $CODEBUILD_WEBHOOK_TRIGGER | sed 's/tag\///')
+      - export TAG_REGEX="v[0-9]{1,}\.[0-9]{1,}\.[0-9a-zA-Z]{1,}"
+  build:
+    commands:
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$DJANGO_IMAGE_NAME:latest --file docker/Dockerfile .
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_NAME:latest --file docker/nginx/Dockerfile .
+      - |
+        if [[ $RELEASE_TAG =~ $TAG_REGEX ]]; then
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$DJANGO_IMAGE_NAME:$RELEASE_TAG --file docker/Dockerfile .
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_NAME:$RELEASE_TAG --file docker/nginx/Dockerfile .
+        fi
+  post_build:
+    commands:
+      - echo "Pushing images to ECR"
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$DJANGO_IMAGE_NAME:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_NAME:latest
+      - |
+        if [[ $RELEASE_TAG =~ $TAG_REGEX ]]; then
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$DJANGO_IMAGE_NAME:$RELEASE_TAG
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_NAME:$RELEASE_TAG
+        fi

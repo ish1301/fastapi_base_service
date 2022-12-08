@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop]
+
+env:
+  FRONTEND_URL: http://localhost:8000/
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.9]
+        os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+
+      - uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      # the package installation will only be executed when the
+      # requirements-files have changed.
+      - run: pip install -r requirements.txt && pip install -r requirements-dev.txt
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: Tests
+        run: python manage.py test
+
+      - name: PyBlack formatting
+        run: black --check ./; echo $?
+
+      - name: Flake8 formatting
+        run: flake8 ./; echo $?
+
