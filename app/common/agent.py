@@ -31,7 +31,6 @@ class Agent:
             self._producer = p
 
         msg = await prepare_envelope(event)
-        log.info(f"Sending message: {event} to topic {topic}")
         await self._producer.send(topic, value=msg)
         log.info(f"message sent to topic {topic}")
 
@@ -46,10 +45,10 @@ class Agent:
             await c.start()
             self._consumer = c
 
-        async for message_metadata in self._consumer:
+        async for msg in self._consumer:
             try:
-                event = await open_envelope(message_metadata)
-                log.debug(f"message received post open envelop - {event}")
+                event = await open_envelope(msg)
+                log.debug(f"message received from topic - {topic}")
                 await func(event)
             except Exception as e:
                 log.exception(e)
