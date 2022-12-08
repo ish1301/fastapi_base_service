@@ -6,10 +6,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "amp-mkpl-terraform-state"
+    bucket         = "fapi-mkpl-terraform-state"
     key            = "app/terraform.tfstate"
     region         = "us-west-2"
-    dynamodb_table = "amp_locks"
+    dynamodb_table = "fapi_locks"
     encrypt        = true
   }
 }
