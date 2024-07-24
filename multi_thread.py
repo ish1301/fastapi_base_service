@@ -2,20 +2,31 @@
 import time
 from threading import Thread
 
-COUNT = 50_000_000
+def getfilenames():
+    return [f'{i}.txt' for i in range(10)]
 
-def countdown(n):
-    while n>0:
-        n -= 1
+def readlines(filename):
+    print(f'processing {filename}')
+    return [f'line {i}'for i in range(10**6)]
 
-t1 = Thread(target=countdown, args=(COUNT//2,))
-t2 = Thread(target=countdown, args=(COUNT//2,))
 
-start = time.time()
-t1.start()
-t2.start()
-t1.join()
-t2.join()
-end = time.time()
+if __name__ == "__main__":
+    t1 = time.perf_counter(), time.process_time()
+    threads = []
+    for filename in getfilenames():
+        print(f"{filename}")
+        threads.append(Thread(target=readlines, args=(filename,)))
 
-print('Time taken in seconds -', end - start)
+    for t in threads:
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    t2 = time.perf_counter(), time.process_time()
+
+    print()
+    print(f"Real time: {t2[0] - t1[0]:.2f} seconds")
+    print(f"CPU time: {t2[1] - t1[1]:.2f} seconds")
+    # print(f"Total lines: {total:,}")
+    print()

@@ -25,7 +25,6 @@ if __name__ == "__main__":
     for i in results:
         total += len(i.get(timeout=1))
 
-
     t2 = time.perf_counter(), time.process_time()
 
     print()
