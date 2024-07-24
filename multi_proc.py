@@ -6,7 +6,7 @@ def getfilenames():
     return [f'{i}.txt' for i in range(10)]
 
 def readlines(filename):
-    print(f'processing {filename}')
+    print(f"processing {filename}")
     return [f'line {i}'for i in range(10**6)]
 
 if __name__ == "__main__":

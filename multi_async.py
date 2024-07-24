@@ -7,7 +7,7 @@ def getfilenames():
     return [f'{i}.txt' for i in range(10)]
 
 async def readlines(filename):
-    print(f'processing {filename}')
+    print(f"processing {filename}")
     return [f'line {i}'for i in range(10**6)]
 
 
@@ -15,7 +15,7 @@ async def main():
     t1 = time.perf_counter(), time.process_time()
     tasks = []
     for filename in getfilenames():
-        print(f"{filename}")
+        print(f"starting {filename}")
         tasks.append(asyncio.create_task(readlines(filename)))
 
     total = 0
