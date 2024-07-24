@@ -8,7 +8,7 @@ def getfilenames():
 
 async def readlines(filename):
     print(f'processing {filename}')
-    return [f'line {i}'for i in range(10**7)]
+    return [f'line {i}'for i in range(10**6)]
 
 
 async def main():
