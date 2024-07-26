@@ -8,7 +8,7 @@ def getfilenames():
 def readlines(filename):
     print(f'processing {filename}')
     # time.sleep(1)
-    return [f'line {i}'for i in range(10**6)]
+    return [f'line {i}' for i in range(10**6)]
 
 
 if __name__ == "__main__":
@@ -20,8 +20,8 @@ if __name__ == "__main__":
             threads.append(executor.submit(readlines, filename))
 
     total = 0
-    for t in threads:
-        total += len(t.result())
+    for i in threads:
+        total += len(i.result())
 
     t2 = time.perf_counter(), time.process_time()
 
